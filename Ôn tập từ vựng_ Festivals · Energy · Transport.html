@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ôn tập từ vựng: Festivals · Energy · Transport</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1e2433;--mu:#6b7385;--ac:#4f46e5;--ok:#16a34a;--no:#dc2626;--bd:#e2e5ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1c2030;--tx:#eef0f7;--mu:#98a0b5;--ac:#818cf8;--bd:#2c3247}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1c2030;--tx:#eef0f7;--mu:#98a0b5;--ac:#818cf8;--bd:#2c3247}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:4px 0 12px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+.tab{flex:1;padding:10px;border:1px solid var(--bd);background:var(--card);border-radius:10px;font-weight:600}
+.tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn{padding:9px 14px;border:1px solid var(--bd);background:var(--card);border-radius:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.row .btn{flex:1;white-space:nowrap}
+.mu{color:var(--mu);font-size:14px}
+.fc{height:240px;perspective:900px;cursor:pointer}
+.in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--bd);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.back{transform:rotateY(180deg)}
+.w{font-size:32px;font-weight:700;overflow-wrap:anywhere}
+.m{font-size:26px;font-weight:600;color:var(--ac)}
+.t{color:var(--mu);margin-top:4px}
+.bar{height:6px;background:var(--bd);border-radius:6px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.q{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.q p{margin:0 0 10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.o{padding:9px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
+.o.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.o.no{background:var(--no);color:#fff;border-color:var(--no)}
+.fb{margin-top:8px;font-size:14px;color:var(--mu);min-height:0}
+.score{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:2;display:flex;justify-content:space-between;align-items:center}
+.hide{display:none}
+</style></head><body><main>
+<h1>📚 Ôn tập từ vựng</h1>
+<div class="tabs"><button class="tab on" id="t1">🃏 Flashcard</button><button class="tab" id="t2">✍️ Luyện tập</button></div>
+
+<section id="s1">
+ <div class="mu" id="cnt"></div>
+ <div class="bar"><i id="pg"></i></div>
+ <div class="fc" id="fc"><div class="in">
+  <div class="face"><div class="w" id="fw"></div><div class="t" id="ft"></div><button class="btn" id="sp" style="margin-top:12px">🔊 Nghe</button><div class="mu" style="margin-top:10px">Chạm để lật thẻ</div></div>
+  <div class="face back"><div class="m" id="bm"></div></div>
+ </div></div>
+ <div class="row"><button class="btn" id="pv">← Trước</button><button class="btn" id="nx">Sau →</button></div>
+ <div class="row"><button class="btn" id="kn">✅ Đã thuộc</button><button class="btn" id="uk">🔁 Chưa thuộc</button></div>
+ <div class="row"><button class="btn" id="sh">🔀 Xáo trộn</button><button class="btn" id="rv">📌 Chỉ ôn từ chưa thuộc</button><button class="btn" id="all">Tất cả</button></div>
+ <div class="mu">Đảo mặt thẻ: <label><input type="checkbox" id="vi"> hiện tiếng Việt trước</label></div>
+</section>
+
+<section id="s2" class="hide">
+ <div class="score"><b id="sc">Điểm: 0/0</b><button class="btn" id="rs">Làm lại</button></div>
+ <p class="mu">Chọn từ phù hợp để điền vào chỗ trống trong mỗi câu.</p>
+ <div id="ql"></div>
+</section>
+</main>
+<script>
+const RAW=`festival|n|lễ hội
+fascinating|adj|thú vị, hấp dẫn
+religious|adj|thuộc về tôn giáo
+celebrate|v|tổ chức lễ
+camp|n, v|trại, cắm trại
+thanksgiving|n|lễ tạ ơn
+stuffing|n|nhân nhồi (vào gà)
+feast|n|bữa tiệc
+turkey|n|gà tây
+gravy|n|nước xốt
+cranberry|n|quả nam việt quất
+seasonal|adj|thuộc về mùa
+steep|adj|dốc
+always|adv|luôn luôn
+often|adv|thường
+sometimes|adv|thỉnh thoảng
+never|adv|không bao giờ
+take a shower|v.phr|tắm vòi hoa sen
+distance|n|khoảng cách
+transport|n|phương tiện giao thông
+electricity|n|điện
+biogas|n|khí sinh học
+footprint|n|dấu vết, vết chân
+solar|adj|(thuộc về) mặt trời
+carbon dioxide|n|khí CO2
+negative|adj|xấu, tiêu cực
+alternative|adj|có thể lựa chọn thay cho vật khác
+dangerous|adj|nguy hiểm
+energy|n|năng lượng
+hydro|n|thuộc về nước
+non-renewable|adj|không phục hồi, không tái tạo được
+plentiful|adj|phong phú, dồi dào
+renewable|adj|phục hồi, làm mới lại
+source|n|nguồn
+hyperloop|n|tàu siêu tốc
+traffic jam|n.phr|kẹt xe
+campsite|n|khu cắm trại
+tube|n|ống nước
+flying car|n.phr|xe bay
+pollute|v|ô nhiễm
+fume|n|khói
+teleporter|n|vận chuyển viễn thông
+mode of travel|n.phr|phương thức đi lại
+worry about|phr.v|lo lắng
+hope|v|hy vọng
+wheel|n|bánh xe
+run on|phr.v|chạy bằng
+track|n|đường ray
+sail|v|chèo
+vehicle|n|phương tiện
+bamboo-copter|n.phr|trực thăng tre
+skyTran|n.phr|taxi bay
+solar-powered ship|n.phr|tàu chạy năng lượng mặt trời
+driverless car|n.phr|xe hơi không người lái
+normal car|n.phr|xe hơi thông thường
+ride|v|lái
+put it on|phr.v|mặc vào
+popular|adj|phổ biến
+autopilot model|n.phr|loại hình tự lái mới
+bullet train|n.phr|tàu cao tốc
+electric scooter|n.phr|xe điện
+electric car|n.phr|xe hơi điện
+allow|v|cho phép
+parking places|n.phr|bãi xe
+petrol-powered car|n.phr|xe hơi chạy bằng xăng
+planet|n|hành tinh
+take holidays|v.phr|nghỉ lễ
+means of transport|n.phr|phương tiện vận chuyển
+at the airport|pre.phr|ở sân bay
+disappear|v|biến mất
+possible|adj|khả thi
+motorbike|n|xe máy
+bicycle|n|xe đạp
+on time|pre.phr|đúng giờ
+fly across|phr.v|băng qua
+walkcar|n|xe điện tử
+stand on it|v.phr|đứng lên nó
+fall off|phr.v|ngã, rơi
+turn on the switch|v.phr|bật công tắc
+solowheel|n|xe 1 bánh
+self-balancing|adj|tự thăng bằng
+convenient|adj|tiện lợi
+comfortable|adj|thoải mái
+charge|v|sạc, nạp
+economical|adj|tiết kiệm
+gaming screen|n.phr|màn hình trò chơi
+introduce|v|giới thiệu
+autopilot function|n.phr|chức năng tự lái
+avoid|v|tránh
+advantage|n|lợi thế
+causing noise|n.phr|làm ồn
+sleep|v|ngủ
+passenger|n|hành khách
+scientist|n|nhà khoa học
+spaceship|n|tàu không gian
+carry|v|chở
+road system|n.phr|hệ thống đường bộ`;
+const W=RAW.split('\n').map(l=>{const [w,t,m]=l.split('|');return{w,t,m}});
+const Q=`Every November, American families gather for a big ___ dinner.|thanksgiving
+My grandma cooks a huge ___ for Tet: dozens of dishes for the whole family.|feast
+We ___ the Mid-Autumn Festival with lanterns and mooncakes.|celebrate
+The Hung Kings' ___ is a public holiday in Vietnam.|festival
+Roast turkey is often served with ___ sauce made from red berries.|cranberry
+He poured ___ all over his mashed potatoes.|gravy
+We put up our tents at the ___ next to the lake.|campsite
+The road up to Sa Pa is very ___, so drivers must be careful.|steep
+I ___ eat breakfast at home, every single day.|always
+My dad ___ reads the news in the morning, about four times a week.|often
+I ___ play football with friends on Sundays, but not every week.|sometimes
+I ___ eat instant noodles for dinner. It's bad for my health.|never
+I usually ___ before bed to feel fresh.|take a shower
+The ___ from my house to school is only 500 metres.|distance
+Buses and trains are popular forms of public ___.|transport
+During a power cut, the fridge and the fans have no ___.|electricity
+Some farmers use ___ from animal waste to cook their meals.|biogas
+Riding a bike instead of a motorbike reduces your carbon ___.|footprint
+___ panels on the roof turn sunlight into power.|solar
+Cars and factories release ___ into the air.|carbon dioxide
+Air pollution has a ___ effect on our lungs.|negative
+Cycling is a good ___ to driving a car.|alternative
+It's ___ to cross the street while looking at your phone.|dangerous
+Wind and sunlight are clean sources of ___.|energy
+___ power comes from moving water, for example at the Hòa Bình dam.|hydro
+Coal and oil are ___ resources. One day they will run out.|non-renewable
+Fish are ___ in the Mekong Delta; there are lots of them.|plentiful
+Wind is a ___ energy source because it never runs out.|renewable
+The sun is a clean ___ of energy.|source
+Every morning I'm stuck in a ___ on my way to work.|traffic jam
+Factory ___ make the air dirty and smelly.|fume
+Too many old motorbikes ___ the air in big cities.|pollute
+Many trains ___ electricity instead of diesel.|run on
+A bicycle has two ___.|wheel
+The train moves quickly along the ___.|track
+Japan's ___ can travel at more than 300 km/h.|bullet train
+My sister goes to campus on an ___.|electric scooter
+Always wear a helmet when you ___ a bike.|ride
+The bus can carry 40 ___.|passenger
+A ___ at NASA studies the planet Mars.|scientist
+The ___ took the astronauts to the space station.|spaceship
+Trucks ___ goods from the port to the market.|carry
+My bus always arrives ___, so I'm never late for class.|on time
+Electric cars are ___ because they save money on petrol.|economical
+This new sofa is very ___. I could sleep on it!|comfortable
+Online banking is ___; you don't have to go to the bank.|convenient
+Don't forget to ___ your phone before you go to bed.|charge
+Please ___ me to your friend. I'd like to meet her.|introduce
+Leave early to ___ the traffic jam.|avoid
+Our school does not ___ students to use phones in class.|allow
+Is it ___ to travel to Mars in the future?|possible
+Dinosaurs ___ millions of years ago.|disappear`.split('\n').map(l=>{const [s,a]=l.split('|');return{s,a}});
+const $=id=>document.getElementById(id);
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let deck=W.slice(),i=0,known=new Set(),fl=false;
+function card(){
+ if(!deck.length){$('fw').textContent='🎉 Hết thẻ!';$('ft').textContent='';$('bm').textContent='Bạn đã thuộc hết!';$('cnt').textContent='';return}
+ const c=deck[i],vi=$('vi').checked;
+ $('fw').textContent=vi?c.m:c.w;$('ft').textContent=vi?'':'('+c.t+')';$('bm').textContent=vi?c.w:c.m;
+ $('sp').style.display=vi?'none':'';
+ $('cnt').textContent='Thẻ '+(i+1)+'/'+deck.length+' · Đã thuộc '+known.size+'/'+W.length;
+ $('pg').style.width=known.size/W.length*100+'%';
+}
+function flip(v){fl=v;$('fc').classList.toggle('flip',fl)}
+function go(d){flip(false);if(deck.length)i=(i+d+deck.length)%deck.length;setTimeout(card,fl?0:150)}
+$('fc').onclick=e=>{if(e.target.id!=='sp')flip(!fl)};
+$('sp').onclick=e=>{e.stopPropagation();try{const u=new SpeechSynthesisUtterance(deck[i].w);u.lang='en-US';speechSynthesis.cancel();speechSynthesis.speak(u)}catch(x){}};
+$('pv').onclick=()=>go(-1);$('nx').onclick=()=>go(1);
+$('kn').onclick=()=>{if(deck.length){known.add(deck[i].w);go(1)}};
+$('uk').onclick=()=>{if(deck.length){known.delete(deck[i].w);go(1)}};
+$('sh').onclick=()=>{deck=sh(deck);i=0;flip(false);card()};
+$('rv').onclick=()=>{deck=W.filter(x=>!known.has(x.w));i=0;flip(false);card()};
+$('all').onclick=()=>{deck=W.slice();i=0;flip(false);card()};
+$('vi').onchange=()=>{flip(false);card()};
+function tab(n){$('s1').classList.toggle('hide',n!==1);$('s2').classList.toggle('hide',n!==2);$('t1').classList.toggle('on',n===1);$('t2').classList.toggle('on',n===2)}
+$('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);
+let ok=0,done=0;
+function quiz(){
+ ok=done=0;$('sc').textContent='Điểm: 0/0';$('ql').innerHTML='';
+ sh(Q).forEach((q,n)=>{
+  const d=sh(Q.filter(x=>x.a!==q.a)).slice(0,3).map(x=>x.a),opts=sh([q.a,...d]);
+  const el=document.createElement('div');el.className='q';
+  const p=document.createElement('p');p.textContent=(n+1)+'. '+q.s.replace('___','_____');el.appendChild(p);
+  const g=document.createElement('div');g.className='opts';
+  const fb=document.createElement('div');fb.className='fb';let answered=false;
+  opts.forEach(o=>{const b=document.createElement('button');b.className='o';b.textContent=o;
+   b.onclick=()=>{if(answered)return;answered=true;done++;
+    const right=o===q.a;if(right)ok++;
+    b.classList.add(right?'ok':'no');
+    [...g.children].forEach(x=>{if(x.textContent===q.a)x.classList.add('ok')});
+    const m=W.find(x=>x.w===q.a);
+    fb.textContent=(right?'✅ Đúng! ':'❌ Đáp án: '+q.a+'. ')+'“'+q.a+'” = '+(m?m.m:'');
+    $('sc').textContent='Điểm: '+ok+'/'+done+' (tổng '+Q.length+' câu)';};
+   g.appendChild(b)});
+  el.appendChild(g);el.appendChild(fb);$('ql').appendChild(el);
+ });
+}
+$('rs').onclick=()=>{quiz();scrollTo(0,0)};
+card();quiz();
+</script></body></html>
