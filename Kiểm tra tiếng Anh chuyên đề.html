@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kiểm tra tiếng Anh chuyên đề</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eaf1f4;--card:#fff;--ink:#16303c;--mut:#5d7683;--line:#c9d8df;--chip:#ffd24a;--chipi:#3a2b00;--ok:#1f8a4c;--okb:#dff4e7;--bad:#c23a3a;--badb:#fbe3e3;--acc:#0f6b86;--sel:#e1f3f8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b21;--card:#17272f;--ink:#e6f0f4;--mut:#93aab5;--line:#2c4350;--chip:#e0b52e;--okb:#12382500;--badb:#3d1c1c;--acc:#5cc3df;--sel:#1b3a46;--ok:#5fd18b;--bad:#ff8d8d;--okb:#163a27}}
+:root[data-theme="dark"]{--bg:#0f1b21;--card:#17272f;--ink:#e6f0f4;--mut:#93aab5;--line:#2c4350;--chip:#e0b52e;--badb:#3d1c1c;--acc:#5cc3df;--sel:#1b3a46;--ok:#5fd18b;--bad:#ff8d8d;--okb:#163a27}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Be Vietnam Pro",system-ui,sans-serif}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:10px;align-items:center;padding:8px 14px;background:var(--card);border-bottom:2px solid var(--line)}
+.bar b{flex:1;font-size:15px}.bar span{color:var(--mut);font-size:14px}
+button{font:inherit;cursor:pointer}
+.bar button{border:0;border-radius:6px;padding:6px 14px;background:var(--acc);color:#fff;font-weight:600}
+.bar button.g{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.bar button:disabled{opacity:.4;cursor:default}
+main{max-width:760px;margin:0 auto;padding:16px 14px 60px}
+h1{font-size:22px;margin:8px 0 2px}.sub{color:var(--mut);margin:0 0 16px;font-size:14px}
+h2{font-size:17px;margin:28px 0 8px;color:var(--acc)}
+.res{display:none;background:var(--card);border-left:6px solid var(--acc);padding:12px 16px;border-radius:6px;font-weight:600;margin-bottom:8px}
+.bank{position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);z-index:4;display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--card);border:1px dashed var(--acc);border-radius:8px}
+.chip{background:var(--chip);color:var(--chipi);padding:3px 12px;border-radius:5px;font-weight:600;cursor:grab;user-select:none;touch-action:manipulation;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.chip.sel{outline:3px solid var(--acc)}.chip.used{opacity:.25;pointer-events:none}
+.g p,.q>p{margin:12px 0}
+.n{display:inline-block;min-width:28px;font-weight:700;color:var(--acc)}
+.slot{display:inline-block;min-width:8.5em;min-height:1.7em;vertical-align:bottom;text-align:center;border-bottom:2px solid var(--acc);background:var(--sel);border-radius:4px 4px 0 0;font-weight:600;cursor:pointer;padding:0 6px}
+.slot.over{background:var(--chip)}
+.slot.ok{background:var(--okb);border-color:var(--ok);color:var(--ok)}.slot.bad{background:var(--badb);border-color:var(--bad);color:var(--bad)}
+small.ans{color:var(--ok);font-weight:600;margin-left:6px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 14px 12px;margin:12px 0}
+.opts{display:grid;gap:6px}
+.opts button{display:flex;gap:10px;text-align:left;padding:8px 12px;border:1.5px solid var(--line);border-radius:6px;background:transparent;color:var(--ink)}
+.opts button:hover{border-color:var(--acc)}
+.opts button b{color:var(--acc);min-width:1.2em}
+.opts button.pick{background:var(--sel);border-color:var(--acc)}
+.opts button.ok{background:var(--okb);border-color:var(--ok)}.opts button.bad{background:var(--badb);border-color:var(--bad)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style></head><body>
+<header class="bar"><b>Kiểm tra tiếng Anh chuyên đề</b><span id="prog">0/40</span><button id="sub">Nộp bài</button><button id="rst" class="g">Làm lại</button></header>
+<main><h1>Đề kiểm tra năng lực tiếng Anh chuyên đề</h1>
+<p class="sub">60 phút · 40 câu · Phần 1: kéo từ vào chỗ trống (hoặc chạm vào từ rồi chạm vào ô trống). Phần 2: chọn A, B, C hoặc D.</p>
+<div class="res" id="res"></div><div id="app"></div></main>
+<script>
+const G=[
+{t:"Bài 1.1 · Ăn uống & giao tiếp nhà hàng (câu 1–7)",w:["meals","thirsty","vegetables","bill","breakfast","menu","hungry"],q:[
+["We usually have three __ a day: morning, noon, and evening to stay energetic.","meals"],
+["Walking under the hot sun for two hours made him feel very __, so he drank two full glasses of water immediately.","thirsty"],
+["Eating fresh green __ every day is essential for maintaining a healthy and balanced diet.","vegetables"],
+["Excuse me, can we have the __, please? We would like to pay before leaving.","bill"],
+["In my family, eggs and bread are the most popular foods for __ in the morning.","breakfast"],
+["The waiter handed us the drink __ so that we could choose our favorite beverages.","menu"],
+["I skipped lunch at noon, so right now I feel extremely __ and want to eat something right away.","hungry"]]},
+{t:"Bài 1.2 · Đo lường kỹ thuật (câu 8–14)",w:["calibration","benchmarking","telemetry","observation","sampling","photometry","estimation"],q:[
+["The process of comparing a measuring device with a known reference standard to eliminate errors is called __.","calibration"],
+["The testing laboratory uses performance __ to compare its analytical sensitivity against international leaders and standards.","benchmarking"],
+["Wildlife biologists use radio __ to track and measure the long migration distances of wild birds without physical capture.","telemetry"],
+["Systematic __ allows scientists to record temperature fluctuations continuously through sensory or optical recording tools without altering the object.","observation"],
+["Random __ was applied across the agricultural zone to gather representative soil specimens for statistical analysis.","sampling"],
+["In medical and biochemical laboratories, __ is utilized to quantify the concentration of substances in liquid samples based on light absorption.","photometry"],
+["Statistical __ helps calculate total forest biomass using theoretical models and limited sample plots when direct physical measurement is impossible.","estimation"]]},
+{t:"Bài 1.3 · Đo lường ẩm thực (câu 15–20)",w:["tablespoon","level","pinch","ratio","dash","heaping"],q:[
+["In cooking, one standard __ (tbsp) is equivalent to approximately 15 ml, which equals three teaspoons.","tablespoon"],
+["Use the flat back of a butter knife to __ off the dry flour flush with the rim of the measuring tool.","level"],
+["Adding just a tiny __ of salt held between your thumb and index finger can dramatically enhance the sweetness of caramel.","pinch"],
+["The classic mixing __ for a traditional vinaigrette dressing is three parts oil to one part vinegar.","ratio"],
+["A quick shake of the bottle produced a single __ of hot sauce, just enough to add aroma without overwhelming the dish.","dash"],
+["The recipe calls for two __ tablespoons of cocoa powder piled high over the rim for a richer chocolate flavor.","heaping"]]}];
+const M=[
+["Khi phục vụ trong nhà hàng, câu hỏi lịch sự phổ biến nào sau đây sử dụng đúng cụm từ cố định (collocation)?",["Are you ready to bill, sir?","Are you ready to order, sir?","Are you ready to skip, sir?","Are you ready to vegetable, sir?"],1],
+["Cụm từ nào dưới đây là cách diễn giải tương đương (paraphrase) chuẩn xác của tính từ \"delicious\"?",["Food eaten at a set time","Specimen collection","Taste good / very tasty","Error adjustment"],2],
+["Theo hướng dẫn phát âm IPA, từ \"vegetable\" /ˈvedʒ.tə.bəl/ có bao nhiêu âm tiết và cần lưu ý điều gì khi phát âm?",["Có 4 âm tiết, đọc rõ từng âm \"ve-ge-ta-bồ\"","Có 3 âm tiết, nhấn mạnh vào \"VÉT\" và lướt nhanh sang \"tờ-bồ\"","Có 2 âm tiết, đọc nuốt âm thành \"veg-bồ\"","Có 3 âm tiết, nhấn mạnh vào âm tiết thứ hai \"tờ\""],1],
+["Từ vựng nào sau đây có âm kết thúc được hướng dẫn: “nâng nhẹ đầu lưỡi chạm chân răng cửa trên để tạo âm /l/ thoang thoảng, không đọc cộc lốc”?",["Breakfast","Drink","Meal","Hungry"],2],
+["Trong đo lường kỹ thuật, phương pháp \"Quantification\" (định lượng hóa) được định nghĩa là gì?",["So sánh thiết bị đo với chuẩn tham chiếu đã biết để hiệu chỉnh sai số","Chuyển đổi các đặc tính, thuộc tính hoặc quan sát định tính thành các giá trị số có thể đo lường","Đánh giá hiệu suất kỹ thuật bằng cách so sánh với các doanh nghiệp dẫn đầu","Thu thập dữ liệu diện rộng về địa hình và cao độ công trình xây dựng"],1],
+["Điểm khác biệt căn bản giữa \"Estimation\" (ước lượng) và \"Quantification\" (định lượng) là gì?",["Estimation là số hóa các đại lượng vật lý, còn Quantification là suy đoán cảm tính","Estimation tính toán gần đúng dựa trên mô hình/dữ kiện gián tiếp, còn Quantification là quy đổi thuộc tính thành giá trị số đo lường cụ thể","Estimation không bao giờ có sai số, trong khi Quantification luôn có sai số lớn","Hai thuật ngữ này hoàn toàn đồng nghĩa và có thể thay thế cho nhau trong mọi hoàn cảnh"],1],
+["Cụm từ nào sau đây KHÔNG phải là collocation chuẩn của thuật ngữ \"Calibration\"?",["Regular calibration","Calibration curve","Calibrate an instrument","Aerial calibration"],3],
+["Việc các kỹ sư tiến hành đo đạc địa chính, khảo sát địa chất hoặc cao độ công trường xây dựng (\"conduct an aerial survey\") thuộc phương pháp đo lường nào?",["Photometry","Telemetry","Survey","Observation"],2],
+["Trong phương pháp trắc quang (Photometry), đại lượng \"Quang thông\" (Luminous Flux) được đo bằng đơn vị nào?",["Candela (cd)","Lumen (lm)","Candela/m²","Lux (lx)"],1],
+["Đơn vị nào sau đây dùng để biểu thị chỉ số \"Độ chói\" (Luminance) trên bề mặt?",["Candela/m²","Lumen/m²","Candela","Lux"],0],
+["Trong sơ đồ quy trình viễn thám/viễn trắc (The Remote Sensing Process), năng lượng phản xạ từ Mục tiêu (Target) được bộ phận nào tiếp nhận trước khi chuyển về Trạm xử lý (Processing station)?",["Trạm phân tích (Analysis)","Người dùng cuối (Application)","Cảm biến / Vệ tinh (Sensor)","Nguồn năng lượng ban đầu (Energy Source)"],2],
+["Một muỗng cà phê tiêu chuẩn (1 teaspoon - tsp) trong công thức nấu ăn tương đương với thể tích nào sau đây?",["Khoảng 5 ml","Khoảng 15 ml","Khoảng 30 ml","Khoảng 240 ml"],0],
+["Mối tương quan thể tích giữa muỗng canh (tablespoon - tbsp) và muỗng cà phê (teaspoon - tsp) là:",["1 tablespoon = 2 teaspoons","1 tablespoon = 3 teaspoons","1 tablespoon = 4 teaspoons","1 tablespoon = 5 teaspoons"],1],
+["Đơn vị cúp đong chuẩn (Cup) thường dùng trong làm bánh có dung tích tương đương khoảng bao nhiêu mililit?",["50 – 60 ml","100 – 120 ml","240 – 250 ml","500 – 550 ml"],2],
+["Thuật ngữ nào chỉ lượng gia vị cực nhỏ kẹp vừa giữa đầu ngón tay cái và ngón tay trỏ (khoảng 1/16 đến 1/8 thìa cà phê)?",["A dash","A cup","A pinch","A heaping spoon"],2],
+["So sánh định lượng giữa \"a dash\" và \"a pinch\" theo ghi chú thực hành nấu ăn:",["\"A dash\" thường có lượng ít hơn \"a pinch\"","\"A dash\" luôn luôn gấp ba lần \"a pinch\"","\"A dash\" dùng cho chất rắn, \"a pinch\" chỉ dùng cho chất khí","Hai định lượng này hoàn toàn bằng nhau trong mọi trường hợp"],0],
+["Trong nghệ thuật pha chế sốt dầu giấm (vinaigrette dressing), tỷ lệ cân bằng kinh điển (classic ratio) giữa dầu và giấm là bao nhiêu?",["1 phần dầu : 1 phần giấm","2 phần dầu : 1 phần giấm","3 phần dầu : 1 phần giấm","4 phần dầu : 1 phần giấm"],2],
+["Dựa vào bảng phân loại các loại thìa ẩm thực, chiếc thìa nào có kích thước chiều dài nhỏ nhất (4-3/4\")?",["Tablespoon (Thìa ăn canh)","Demitasse spoon (Thìa tách cà phê)","Soup spoon (Thìa ăn súp)","Egg spoon (Thìa ăn trứng)"],3],
+["Lĩnh vực nào sau đây KHÔNG phải là ứng dụng phổ biến của phương pháp trắc quang (Photometry) được liệt kê trong tài liệu?",["Đo hàm lượng đường, cholesterol, men gan trong xét nghiệm máu (Y học)","Kiểm tra mức độ kim loại nặng, phosphate, nitrat trong nguồn nước (Môi trường)","Đo vẽ bản đồ địa hình diện rộng và trắc địa công trình (Xây dựng)","Phân tích phẩm màu và kiểm tra phụ gia dinh dưỡng (Thực phẩm)"],2],
+["Từ vựng nào dưới đây có âm đầu phát âm là phụ âm vô thanh /θ/ (đặt đầu lưỡi giữa hai hàm răng và thổi luồng gió nhẹ ra ngoài)?",["Delicious","Thirsty","Telemetry","Teaspoon"],1]];
+const $=s=>document.querySelector(s),app=$("#app");
+let sel=null,drag=null,locked=false,slots=[],mcs=[];
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
+const unsel=()=>{sel&&sel.classList.remove("sel");sel=null};
+function free(s){if(!s.chip)return;s.chip.classList.remove("used");s.chip.slot=null;s.chip=null;s.textContent=""}
+function place(s,c){free(s);if(c.slot){c.slot.chip=null;c.slot.textContent=""}s.chip=c;c.slot=s;s.textContent=c.textContent;c.classList.add("used");unsel();upd()}
+function upd(){const n=slots.filter(s=>s.chip).length+mcs.filter(m=>m.pick!=null).length;$("#prog").textContent=n+"/40"}
+function build(){
+ app.innerHTML="";slots=[];mcs=[];locked=false;sel=null;$("#res").style.display="none";$("#sub").disabled=false;
+ const h=document.createElement("h2");h.textContent="Phần 1 · Điền từ vào chỗ trống";app.append(h);
+ let k=1;
+ G.forEach(g=>{
+  const sec=document.createElement("section");sec.className="g";
+  sec.innerHTML="<h2></h2>";sec.firstChild.textContent=g.t;
+  const bank=document.createElement("div");bank.className="bank";
+  shuf(g.w).forEach(w=>{const c=document.createElement("span");c.className="chip";c.textContent=w;c.draggable=true;c.tabIndex=0;
+   c.ondragstart=e=>{if(locked)return e.preventDefault();drag=c;e.dataTransfer.setData("text/plain",w)};
+   c.onclick=()=>{if(locked)return;if(sel===c)return unsel();unsel();sel=c;c.classList.add("sel")};
+   c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click()}};
+   bank.append(c)});
+  sec.append(bank);
+  g.q.forEach(([t,a])=>{
+   const p=document.createElement("p"),[b,e]=t.split("__");
+   p.innerHTML='<span class="n">'+k++ +'.</span>';p.append(b);
+   const s=document.createElement("span");s.className="slot";s.dataset.a=a;s.tabIndex=0;
+   s.ondragover=e=>{e.preventDefault();s.classList.add("over")};s.ondragleave=()=>s.classList.remove("over");
+   s.ondrop=e=>{e.preventDefault();s.classList.remove("over");if(!locked&&drag)place(s,drag)};
+   s.onclick=()=>{if(locked)return;if(sel)place(s,sel);else if(s.chip){free(s);upd()}};
+   s.onkeydown=e=>{if(e.key==="Enter")s.click()};
+   slots.push(s);p.append(s,e);sec.append(p)});
+  app.append(sec)});
+ const h2=document.createElement("h2");h2.textContent="Phần 2 · Trắc nghiệm (câu 21–40)";app.append(h2);
+ M.forEach(([t,o,a],i)=>{
+  const d=document.createElement("div");d.className="q";
+  const p=document.createElement("p");p.innerHTML='<span class="n">'+(21+i)+'.</span>';p.append(t);d.append(p);
+  const box=document.createElement("div");box.className="opts";
+  const m={a,btn:[],pick:null};
+  o.forEach((x,j)=>{const b=document.createElement("button");b.innerHTML="<b>"+"ABCD"[j]+"</b>";b.append(x);
+   b.onclick=()=>{if(locked)return;m.pick=j;m.btn.forEach((y,z)=>y.classList.toggle("pick",z===j));upd()};
+   m.btn.push(b);box.append(b)});
+  d.append(box);app.append(d);mcs.push(m)});
+ upd();
+}
+$("#sub").onclick=()=>{
+ locked=true;unsel();let sc=0,g=0,m=0;
+ slots.forEach(s=>{const ok=s.chip&&s.chip.textContent===s.dataset.a;s.classList.add(ok?"ok":"bad");if(ok)g++;
+  else{const x=document.createElement("small");x.className="ans";x.textContent="→ "+s.dataset.a;s.after(x)}});
+ mcs.forEach(q=>{q.btn.forEach((b,j)=>{b.classList.remove("pick");if(j===q.a)b.classList.add("ok");else if(j===q.pick)b.classList.add("bad")});if(q.pick===q.a)m++});
+ sc=g+m;const r=$("#res");r.style.display="block";
+ r.textContent="Kết quả: "+sc+"/40 câu đúng (Phần 1: "+g+"/20 · Phần 2: "+m+"/20)";
+ $("#sub").disabled=true;window.scrollTo({top:0,behavior:"smooth"});
+};
+$("#rst").onclick=()=>{build();window.scrollTo({top:0})};
+build();
+</script></body></html>
